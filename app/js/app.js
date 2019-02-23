@@ -37,9 +37,9 @@ function display(){
     
 
         tasksList.innerHTML += `
-        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+        <div class="card border-primary mb-3 mx-auto" style="max-width: 40rem;">
+        <div class="card-header">${title}</div>
             <div class="card-body">
-                <h4 class="card-title">${title}</h4>
                 <p class="card-text">${description}</p>
                 <a href="#" class="btn btn-danger btn-sm" onclick="removeTaskFromLocalStorage('${title}')">Delete</a>
             </div>
