@@ -10,6 +10,19 @@ class Utils{
         document.getElementById('title').value = '';
         document.getElementById('description').value = '';
     }
+
+    static showMessage(message, type){
+        // create div
+        const div = document.createElement('div');
+        div.className = `alert alert-${type}`;
+        div.appendChild(document.createTextNode(message));
+        const container = document.getElementById('cardB');
+        const form = document.getElementById('formAdd');
+        container.insertBefore(div,form);
+
+        // Clear message in 3 seconds
+        setTimeout(() => document.querySelector('.alert').remove(), 3000);
+    }
 }
 
 document.getElementById('formAdd').addEventListener('submit', (e) =>{
