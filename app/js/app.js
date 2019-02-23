@@ -5,6 +5,45 @@ class Task{
     }
 }
 
+
+
+class Store{
+
+    // Get tasks
+    static getTasks(){
+        let tasks;
+        if(localStorage.getItem('tasks') === null){
+            tasks = [];
+        }else{
+            tasks = JSON.parse(localStorage.getItem('tasks'));
+        }
+
+        return tasks;
+    }
+
+    // Add task in the localstorage
+    static addTaskToLocalStorage(task){
+        const tasks = Store.getTasks();
+        tasks.push(task);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    // Remove task from the localstorage
+    static removeTaskFromLocalStorage(title){
+        const tasks = Store.getTasks();
+
+        tasks.forEach((task, index) => {
+            if(task.title === title){
+                tasks.splice(index, 1);
+            }
+        });
+
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+}
+
+
+
 class Utils{
     static clearFields(){
         document.getElementById('title').value = '';
