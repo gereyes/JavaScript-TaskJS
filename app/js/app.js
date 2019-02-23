@@ -4,3 +4,10 @@ class Task{
         this.description = description;
     }
 }
+
+class Utils{
+    static clearFields(){
+        document.getElementById('title').value = '';
+        document.getElementById('description').value = '';
+    }
+}
