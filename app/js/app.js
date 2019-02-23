@@ -1,95 +1,52 @@
-class Task{
-    constructor(title, description){
-        this.title = title;
-        this.description = description;
-    }
-}
-
-
-
-class Store{
-
-    // Get tasks
-    static getTasks(){
-        let tasks;
-        if(localStorage.getItem('tasks') === null){
-            tasks = [];
-        }else{
-            tasks = JSON.parse(localStorage.getItem('tasks'));
-        }
-
-        return tasks;
-    }
-
-    // Add task in the localstorage
-    static addTaskToLocalStorage(task){
-        const tasks = Store.getTasks();
-        tasks.push(task);
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-
-    // Remove task from the localstorage
-    static removeTaskFromLocalStorage(title){
-        const tasks = Store.getTasks();
-
-        tasks.forEach((task, index) => {
-            if(task.title === title){
-                tasks.splice(index, 1);
-            }
-        });
-
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-}
-
-
-
-class Utils{
-    static clearFields(){
-        document.getElementById('title').value = '';
-        document.getElementById('description').value = '';
-    }
-
-    static showMessage(message, type){
-        // create div
-        const div = document.createElement('div');
-        div.className = `alert alert-${type}`;
-        div.appendChild(document.createTextNode(message));
-        const container = document.getElementById('cardB');
-        const form = document.getElementById('formAdd');
-        container.insertBefore(div,form);
-
-        // Clear message in 3 seconds
-        setTimeout(() => document.querySelector('.alert').remove(), 3000);
-    }
-}
-
-document.getElementById('formAdd').addEventListener('submit', (e) =>{
-    
-    // PreventDefault
-    e.preventDefault();
-
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-
-    // Validate fields
-    if(title === '' || description === ''){
-        // Message for empty fields
-        Utils.showMessage('The fields are empty', 'danger')
+// Get tasks
+function getTasks(){
+    let tasks;
+    if(localStorage.getItem('tasks') === null){
+        tasks = [];
     }else{
-        const task = new Task(title, description);
-
-        // Add task to the UI
-        UI.addTaskToList(task);
-
-        // Add task to the localstorage
-        Store.addTaskToLocalStorage(task);
-
-        // Show success message
-        Utils.showMessage('The task was added correctly', 'success');
-
-        // Crear form fields
-        Utils.clearFields();
-
+        tasks = JSON.parse(localStorage.getItem('tasks'));
     }
-});
+    
+    return tasks;
+}
+
+// Remove task from the localstorage
+function removeTaskFromLocalStorage(title){
+    const tasks = getTasks();
+
+    tasks.forEach((task, index) => {
+        if(task.title === title){
+            tasks.splice(index, 1);
+        }
+    });
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+    display();
+}
+
+
+function display(){
+    const tasks = getTasks();
+    const tasksList = document.getElementById('tasks');
+
+    tasksList.innerHTML = '';
+    for(let i = 0; i < tasks.length; i++) {
+        let title = tasks[i].title;
+        let description = tasks[i].description;
+    
+
+        tasksList.innerHTML += `
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+            <div class="card-body">
+                <h4 class="card-title">${title}</h4>
+                <p class="card-text">${description}</p>
+                <a href="#" class="btn btn-danger btn-sm" onclick="removeTaskFromLocalStorage('${title}')">Delete</a>
+            </div>
+        </div>
+        `;   
+        }
+}
+
+
+display();
